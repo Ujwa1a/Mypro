@@ -1,0 +1,27 @@
+{
+    "name": "brishDemo",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^7",
+        "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+        "express": "^4"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.108.11",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-overtimeui": "cds watch --open overtimeui/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy brishDemo --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
+    }
+}

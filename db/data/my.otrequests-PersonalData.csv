@@ -1,0 +1,7 @@
+employeeId;employeeName;designation;mailId;department;immediateSupervisor;hourleyPayRate
+10091;Wuthering;BDA;wuthering@bhrish.com;Sales;Jappy;100
+10092;Jane Eyre;Manager;Jane@bhrish.com;Sales;Jappy;500
+10093;Elena;SA;Elena@bhrish.com;IT;Olion;300
+10094;Pongo;PA;pongo@bhrish.com;IT;Olion;400
+10095;Eugine;Developer;eugine@bhrish.com;IT;Olion;400
+10096;Megha;SE;megha@bhrish.com;IT;Supra;200

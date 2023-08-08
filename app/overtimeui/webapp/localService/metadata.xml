@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="PersonalData" EntityType="CatalogService.PersonalData">
+                    <NavigationPropertyBinding Path="linkOvertimeRequest" Target="OvertimeRequest"/>
+                </EntitySet>
+                <EntitySet Name="OvertimeRequest" EntityType="CatalogService.OvertimeRequest">
+                    <NavigationPropertyBinding Path="linkEmployee" Target="PersonalData"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="PersonalData">
+                <Key>
+                    <PropertyRef Name="employeeId"/>
+                </Key>
+                <Property Name="employeeId" Type="Edm.String" MaxLength="20" Nullable="false"/>
+                <Property Name="employeeName" Type="Edm.String" MaxLength="20"/>
+                <Property Name="designation" Type="Edm.String" MaxLength="20"/>
+                <Property Name="mailId" Type="Edm.String" MaxLength="30"/>
+                <Property Name="department" Type="Edm.String" MaxLength="20"/>
+                <Property Name="immediateSupervisor" Type="Edm.String" MaxLength="20"/>
+                <Property Name="hourleyPayRate" Type="Edm.Int32"/>
+                <NavigationProperty Name="linkOvertimeRequest" Type="Collection(CatalogService.OvertimeRequest)" Partner="linkEmployee"/>
+            </EntityType>
+            <EntityType Name="OvertimeRequest">
+                <Key>
+                    <PropertyRef Name="RequestId"/>
+                </Key>
+                <Property Name="RequestId" Type="Edm.String" MaxLength="20" Nullable="false"/>
+                <Property Name="employeeId" Type="Edm.String" MaxLength="20"/>
+                <Property Name="OvertimeStartDate" Type="Edm.Date"/>
+                <Property Name="OvertimeEndDate" Type="Edm.Date"/>
+                <Property Name="DateRequestSubmitted" Type="Edm.Date"/>
+                <Property Name="OvertimeReason" Type="Edm.String" MaxLength="100"/>
+                <Property Name="TotalOvertimeHours" Type="Edm.Int32"/>
+                <NavigationProperty Name="linkEmployee" Type="CatalogService.PersonalData" Partner="linkOvertimeRequest">
+                    <ReferentialConstraint Property="linkEmployee_employeeId" ReferencedProperty="employeeId"/>
+                </NavigationProperty>
+                <Property Name="linkEmployee_employeeId" Type="Edm.String" MaxLength="20"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

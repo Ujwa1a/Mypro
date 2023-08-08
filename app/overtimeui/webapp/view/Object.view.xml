@@ -1,0 +1,192 @@
+<mvc:View
+    controllerName="brish.overtimeui.controller.Object"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title id="employeeTitle"
+                text="{employeeName}"
+                level="H2"/>
+        </semantic:titleHeading>
+
+        <semantic:headerContent >
+        <Button id="b" icon="sap-icon://monitor-payments" />
+            <ObjectNumber id="o1"
+                number="{
+                    path: 'hourleyPayRate',
+                    formatter: '.formatter.numberUnit'
+                }" />
+        </semantic:headerContent>
+
+        <semantic:content>
+        	<VBox id="v1" class="sapUiSmallMargin">
+        	<f:SimpleForm id="personalInfoForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Personal Data"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+            <f:toolbar>
+			<Toolbar id="to1">
+					<Title id="ti" text="Personal Data"/>
+					<ToolbarSpacer id="too" />
+                        <Label id="l1" text="Register New Employee" />
+                    	<Switch id="isNew" change="onNewEmployee" customTextOn="Yes" customTextOff="No">
+                            <layoutData>
+                                <FlexItemData id="fl1" growFactor="1" />
+                            </layoutData>
+                        </Switch>
+					<Button id="b1" icon="sap-icon://save" press="onSaveEmployees"/>	
+                    <Button id="bu" icon="sap-icon://employee-rejections" press="onDeleteEmployee"/>			
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+                <Label id="l2" text="Employee Id" />
+				<Input id="empId" value="{employeeId}" enabled="false"/>
+				<Label id="l3" text="Name" />
+				<Input id="employeeName" value="{employeeName}" />
+				<Label id="l4" text="Designation" />
+				<Input id="designation" value="{designation}"/>				
+				<Label id="l5" text="Mail Id" />				
+				<Input id="mailId" value="{mailId}" />
+                <Label id="l6" text="Immediate Supervisor" />
+				<Input id="immediateSupervisor" value="{immediateSupervisor}"/>	
+                <Label id="l7" text="hourly Pay Rate" />
+				<Input id="hourleyPayRate" value="{hourleyPayRate}"/>	
+                
+                <Title id="tit"/>
+                <Label id="l8" text="Department" />
+				<Select id="department" selectedKey="{department}">
+					<items>
+						<core:Item id="c1" text="Software development" key="Software development"/>
+						<core:Item id="c2" text="Sales" key="Sales"/>
+						<core:Item id="c3" text="IT" key="IT"/>
+					</items>
+				</Select>               
+			</f:content>
+		</f:SimpleForm>
+
+            <Table
+                id="leavereqTable"
+                width="auto"
+                items="{
+                    path: '/OvertimeRequest',
+                    sorter: {
+                        path: 'RequestId',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"              
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onUpdateFinished">
+
+                <headerToolbar>
+                    <OverflowToolbar id="of">
+                        <Title
+                            id="tableHeader"
+                            text="Employee ({employeeId}) - Overtime Request"
+                            level="H3"/>
+                        <ToolbarSpacer id="to" />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData id="oft"
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column id="co">
+                        <Text text="{i18n>RequestId}" id="RequestId"/>
+                    </Column>
+                    <Column id="co1" hAlign="End">
+                        <Text id="tx" text="{i18n>OvertimeReason}"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem id="leavereqItems" type="Navigation"                  
+                        press=".onLeaveReqPress">
+                        <cells>
+                            <ObjectIdentifier id="oi"
+                                title="{RequestId}"/>
+                            <ObjectIdentifier id="on"
+                                title ="{OvertimeReason}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+<f:SimpleForm id="OvertimeReqForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Overtime Request"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+            <f:toolbar>
+			<Toolbar>
+					<Title text="Overtime Request"/>
+					<ToolbarSpacer />
+					<Button icon="sap-icon://save" press="onSaveLeaveRequest"/>				
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+                <Label text="RequestId" />
+				<Input id="leavereqid" value="{RequestId}" enabled="false"/>
+                <Label text="Employee Id" />
+				<Input id="employeeId" value="{linkEmployee_employeeId}" enabled="false"/>
+				<Label text="Request Date" />
+				<DatePicker id="leavereqdate" value="{path:'DateRequestSubmitted',type:'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'dd-MM-yyyy', strictParsing: true , UTC: true} }"/>
+                <DatePicker id="OvertimeStartDate" value="{path:'OvertimeStartDate',type:'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'dd-MM-yyyy', strictParsing: true , UTC: true} }"/>
+               <DatePicker id="OvertimeEndDate" value="{path:'OvertimeEndDate',type:'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'dd-MM-yyyy', strictParsing: true , UTC: true} }"/>
+                <Label text="OvertimeReason" />
+                <TextArea id="OvertimeReason" value="{OvertimeReason}"></TextArea>           
+			</f:content>
+		</f:SimpleForm>
+            
+            	</VBox>
+        </semantic:content>
+
+    </semantic:SemanticPage>
+
+</mvc:View>
